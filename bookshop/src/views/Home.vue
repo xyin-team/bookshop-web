@@ -73,6 +73,7 @@ export default {
   top:0;
   width: 100%;
   z-index: 10;
+  background: white;
 }
 
 .logo {

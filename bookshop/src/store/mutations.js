@@ -45,12 +45,14 @@ export default {
     }
   },
   NUM_CHANGE(state, payload) {
-    state.cart.forEach((item) => {
+    const cart = state.cart.map((item) => {
       if (item.id === payload.id) {
         item.cartNum = payload.cartNum; // eslint-disable-line no-param-reassign
         console.log(item.cartNum);
       }
+      return item;
     });
+    state.cart = cart;
   },
   DELETE(state, product) {
     state.cart.forEach((item, index) => {
