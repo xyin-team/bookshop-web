@@ -1,10 +1,10 @@
 <template>
   <div class="cart">
     <el-table border :data="order" style="width: 100%">
-      <el-table-column prop="id" label="订单ID" width="180"></el-table-column>
-      <el-table-column prop="bookId" label="商品名称" width="240"></el-table-column>
+      <el-table-column prop="bookName" label="商品名称" width="240"></el-table-column>
       <el-table-column prop="address" label="地址" width="240"></el-table-column>
       <el-table-column prop="count" label="数量" width="180"></el-table-column>
+      <el-table-column prop="priceNum" label="总价" width="180"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
@@ -18,7 +18,7 @@
       </el-table-column>
     </el-table>
     <el-dialog title="注意" :visible.sync="dialogVisible" width="20%">
-      <span>确定要删除这个商品吗?</span>
+      <span>确定要删除这个订单吗?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogSure">确 定</el-button>
@@ -43,6 +43,14 @@ export default {
   },
   methods: {
     ...mapActions(['getOrder']),
+    dialogVisibleTrue(data) {
+      this.dialogVisible = true;
+      this.result = data;
+    },
+    dialogSure() {
+      this.delProduct(this.result);
+      this.dialogVisible = false;
+    },
   },
   mounted() {
     this.getOrder(this.user);
