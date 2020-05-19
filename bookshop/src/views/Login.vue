@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data() {
@@ -28,13 +28,18 @@ export default {
       },
     };
   },
+  computed: mapState(['user']),
   methods: {
     ...mapActions([
       'login',
     ]),
     onSubmit() {
       this.login(this.loginData);
-      this.$router.push('/');
+      if (this.user.isadmin === false) {
+        this.$router.push('/');
+      } else {
+        this.$router.push('/admin');
+      }
     },
   },
 };

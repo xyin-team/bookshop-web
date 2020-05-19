@@ -76,4 +76,13 @@ export default {
     });
     state.order.splice(index, 1);
   },
+  REMOVEBOOK(state, payload) {
+    let index = -1;
+    state.booklist.forEach((item, idx) => {
+      if (item.id === payload.id) {
+        index = idx;
+      }
+    });
+    state.booklist.splice(index, 1);
+  },
 };

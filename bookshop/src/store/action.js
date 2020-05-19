@@ -106,4 +106,33 @@ export default {
       console.log('请求错误', err);
     });
   },
+  addBook({ commit }, payload) { // eslint-disable-line no-unused-vars
+    fetch('http://xyinproxy.free.idcfengye.com/book/add', {
+      headers: {
+        'content-type': 'application/json',
+        'token': payload.token, // eslint-disable-line quote-props
+      },
+      method: 'POST',
+      body: JSON.stringify(payload.form),
+    }).then((res) => res.json()).then((json) => {
+      console.log(json);
+      commit('GETORDER', json);
+    }).catch((err) => {
+      console.log('请求错误', err);
+    });
+  },
+  delbook({ commit }, payload) { // eslint-disable-line no-unused-vars
+    fetch(`http://xyinproxy.free.idcfengye.com/book/remove?id=${payload.id}`, {
+      headers: {
+        'content-type': 'application/json',
+        'token': payload.token, // eslint-disable-line quote-props
+      },
+      method: 'GET',
+    }).then((res) => res.json()).then((json) => {
+      console.log(json);
+      commit('REMOVEBOOK', json);
+    }).catch((err) => {
+      console.log('请求错误', err);
+    });
+  },
 };
