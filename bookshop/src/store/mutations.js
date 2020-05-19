@@ -67,4 +67,13 @@ export default {
   GETORDER(state, payload) {
     state.order = [...payload.data];
   },
+  DELORDER(state, payload) {
+    let index = -1;
+    state.order.forEach((item, idx) => {
+      if (item.id === payload.id) {
+        index = idx;
+      }
+    });
+    state.order.splice(index, 1);
+  },
 };

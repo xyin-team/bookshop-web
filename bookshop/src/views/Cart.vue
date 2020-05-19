@@ -74,6 +74,9 @@ export default {
       this.dialogVisible = false;
     },
     minusNum(value) {
+      if (value.cartNum === 0) {
+        return;
+      }
       value.cartNum -= 1; // eslint-disable-line no-param-reassign
       this.handleChange(value);
     },

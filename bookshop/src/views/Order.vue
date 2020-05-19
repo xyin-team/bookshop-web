@@ -42,13 +42,14 @@ export default {
     ...mapState(['order', 'user']),
   },
   methods: {
-    ...mapActions(['getOrder']),
+    ...mapActions(['getOrder', 'delOrder']),
     dialogVisibleTrue(data) {
       this.dialogVisible = true;
       this.result = data;
     },
     dialogSure() {
-      this.delProduct(this.result);
+      this.result.token = this.user.token;
+      this.delOrder(this.result);
       this.dialogVisible = false;
     },
   },

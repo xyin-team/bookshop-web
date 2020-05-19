@@ -53,6 +53,22 @@ export default {
   delProduct({ commit }, payload) {
     commit('DELETE', payload);
   },
+  // eslint-disable-next-line no-unused-vars
+  delOrder({ commit }, payload) {
+    fetch(`http://xyinproxy.free.idcfengye.com/order/remove?id=${payload.id}`, {
+      headers: {
+        'content-type': 'application/json',
+        'token': payload.token, // eslint-disable-line quote-props
+      },
+      method: 'POST',
+    }).then((res) => {
+      console.log(res);
+      commit('DELORDER', payload);
+    }).catch((err) => {
+      console.log('请求出错', err);
+    });
+    console.log(payload);
+  },
   submit({ commit }, payload) { // eslint-disable-line no-unused-vars
     console.log(payload);
     for (let i = 0; i < payload.cart.length; i += 1) {
