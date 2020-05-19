@@ -38,7 +38,7 @@ export default {
   data() {
     return {};
   },
-  computed: mapState(['booklist', 'login']),
+  computed: mapState(['booklist']),
   mounted() {
     this.$store.dispatch('getList');
   },
