@@ -1,36 +1,29 @@
 <template>
-  <div>
-    <el-table :data="cartProducts" style="width: 100%">
+  <div class="cart">
+    <el-table border :data="cart" style="width: 100%">
       <el-table-column prop="id" label="商品ID" width="180"></el-table-column>
-      <el-table-column prop="name" label="商品名称" width="180"></el-table-column>
+      <el-table-column prop="bookName" label="商品名称" width="180"></el-table-column>
       <el-table-column label="数量" width="180">
         <template slot-scope="scope">
-          <el-input-number
-            size="mini"
-            :min="1"
-            :value="scope.row.num"
-            v-on:input="handleBlur"
-            @change="handleChange( scope.row )"
-          ></el-input-number>
+          <el-button size="mini" icon="el-icon-minus" @click="minusNum(scope.row)"></el-button>
+          {{ scope.row.cartNum }}
+          <el-button size="mini" icon="el-icon-plus" @click="addNum(scope.row)"></el-button>
         </template>
       </el-table-column>
       <el-table-column prop="price" label="单价" width="180"></el-table-column>
-      <el-table-column prop="total_num" label="总价" width="180"></el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
             type="danger"
             plain
             icon="el-icon-delete"
             size="mini"
-            @click="dialogVisibleTrue( scope.row )"
+            @click="dialogVisibleTrue(scope.row)"
           >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <Info v-if="totalNum"></Info>
-
+    <el-button class="createOrder" type="primary" @click="showOrderDialog">创建订单</el-button>
     <el-dialog title="注意" :visible.sync="dialogVisible" width="20%">
       <span>确定要删除这个商品吗?</span>
       <span slot="footer" class="dialog-footer">
@@ -38,30 +31,40 @@
         <el-button type="primary" @click="dialogSure">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="创建订单" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="配送地址">
+          <el-input v-model="form.address" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="toSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
-import Info from "./@/components/Info.vue";
+import { mapState, mapActions } from 'vuex';
 
 export default {
-  name: "cart",
+  name: 'cart',
   data() {
     return {
       dialogVisible: false,
       result: null,
-      input_number_value: 1
+      dialogFormVisible: false,
+      form: {
+        address: '',
+      },
     };
   },
   computed: {
-    ...mapGetters(["cartProducts", "totalNum"])
-  },
-  components: {
-    Info
+    ...mapState(['cart', 'user']),
   },
   methods: {
-    ...mapActions(["delProduct", "numChange"]),
+    ...mapActions(['delProduct', 'handleChange', 'submit']),
     dialogVisibleTrue(data) {
       this.dialogVisible = true;
       this.result = data;
@@ -70,22 +73,46 @@ export default {
       this.delProduct(this.result);
       this.dialogVisible = false;
     },
-    handleBlur(value) {
-      this.input_number_value = value;
+    minusNum(value) {
+      value.cartNum -= 1; // eslint-disable-line no-param-reassign
+      this.handleChange(value);
     },
-    handleChange(data) {
-      data.value = this.input_number_value;
-      this.numChange(data);
-    }
-  }
+    addNum(value) {
+      value.cartNum += 1; // eslint-disable-line no-param-reassign
+      this.handleChange(value);
+    },
+    showOrderDialog() {
+      this.dialogFormVisible = true;
+    },
+    toSubmit() {
+      this.dialogFormVisible = false;
+      console.log(this.form, this.cart, this.user);
+      const payload = {
+        form: this.form,
+        cart: this.cart,
+        user: this.user,
+      };
+      this.submit(payload);
+    },
+  },
 };
 </script>
 
 <style scoped>
+.cart {
+  margin: auto;
+  margin-top: 80px;
+  text-align: left;
+  width: 80%;
+}
 .el-table th > .cell {
   text-align: center;
 }
 .el-table td > .cell {
   text-align: center;
+}
+
+.createOrder {
+  margin-top: 20px;
 }
 </style>

@@ -1,33 +1,93 @@
 export default {
-
-  addToCart({
-    commit,
-  }, product) {
-    commit('ADD_TO_CART', {
-      id: product.id,
+  login({ commit }, payload) {
+    fetch('http://xyinproxy.free.idcfengye.com/login', {
+      body: JSON.stringify({ username: payload.name, password: payload.password }),
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'POST',
+      mode: 'cors',
+    }).then((res) => res.json()).then((json) => {
+      commit('USER_DATA', {
+        name: payload.name,
+        token: json.data.token,
+      });
+      return true;
+    }).catch((err) => {
+      console.log('请求错误', err);
     });
   },
-
-  numChange({
-    commit,
-  }, data) {
-    commit('NUM_CHANGE', {
-      id: data.id,
-      value: data.value,
+  register({ commit }, payload) { // eslint-disable-line no-unused-vars
+    fetch('http://xyinproxy.free.idcfengye.com/register', {
+      body: JSON.stringify(payload),
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'POST',
+    }).then((response) => {
+      console.log(response);
+      return true;
     });
   },
-
-  // 删除购物车的指定的商品
-  delProduct({
-    commit,
-  }, product) {
-    commit('DELETE', product);
+  quit({ commit }) {
+    commit('QUIT');
   },
-
-  // 清空购物车
-  clearAllCart({
-    commit,
-  }) {
-    commit('CLEAR');
+  getList({ commit }) { // eslint-disable-line no-unused-vars
+    fetch('http://xyinproxy.free.idcfengye.com/book/list', {
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'GET',
+    }).then((res) => res.json()).then((json) => {
+      commit('BOOKLIST', json);
+    }).catch((err) => {
+      console.log('请求错误', err);
+    });
+  },
+  addToCart({ commit }, payload) {
+    commit('ADDTOCART', payload);
+  },
+  handleChange({ commit }, payload) {
+    commit('NUM_CHANGE', payload);
+  },
+  delProduct({ commit }, payload) {
+    commit('DELETE', payload);
+  },
+  submit({ commit }, payload) { // eslint-disable-line no-unused-vars
+    console.log(payload);
+    for (let i = 0; i < payload.cart.length; i += 1) {
+      console.log(payload.cart[i]);
+      fetch('http://xyinproxy.free.idcfengye.com/order/create', {
+        headers: {
+          'content-type': 'application/json',
+          'token': payload.user.token, // eslint-disable-line quote-props
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          address: payload.form.address,
+          count: payload.cart[i].cartNum,
+          bookId: payload.cart[i].id,
+        }),
+      }).then((res) => res.json()).then((json) => {
+        console.log(json);
+        commit('CLEAR');
+      }).catch((err) => {
+        console.log('请求错误', err);
+      });
+    }
+  },
+  getOrder({ commit }, payload) { // eslint-disable-line no-unused-vars
+    fetch('http://xyinproxy.free.idcfengye.com/order/list', {
+      headers: {
+        'content-type': 'application/json',
+        'token': payload.token, // eslint-disable-line quote-props
+      },
+      method: 'GET',
+    }).then((res) => res.json()).then((json) => {
+      console.log(json);
+      commit('GETORDER', json);
+    }).catch((err) => {
+      console.log('请求错误', err);
+    });
   },
 };
