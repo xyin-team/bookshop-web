@@ -10,6 +10,7 @@ const state = {
   user: {
     name: '',
     token: '',
+    isAdmin: false,
   },
   login: false,
   booklist: [],

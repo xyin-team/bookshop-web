@@ -8,7 +8,9 @@ export default {
       method: 'POST',
       mode: 'cors',
     }).then((res) => res.json()).then((json) => {
+      console.log(json);
       commit('USER_DATA', {
+        isAdmin: json.isAdmin,
         name: payload.name,
         token: json.data.token,
       });
@@ -24,9 +26,10 @@ export default {
         'content-type': 'application/json',
       },
       method: 'POST',
-    }).then((response) => {
-      console.log(response);
-      return true;
+    }).then((res) => res.json()).then((json) => {
+      console.log(json);
+    }).catch((err) => {
+      console.log('请求错误', err);
     });
   },
   quit({ commit }) {

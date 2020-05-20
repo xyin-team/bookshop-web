@@ -35,7 +35,7 @@ export default {
     ]),
     onSubmit() {
       this.login(this.loginData);
-      if (this.user.isadmin === false) {
+      if (this.user.isAdmin === false) {
         this.$router.push('/');
       } else {
         this.$router.push('/admin');
