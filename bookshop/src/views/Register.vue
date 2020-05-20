@@ -29,13 +29,11 @@ export default {
   },
   methods: {
     ...mapActions([
-      'login',
+      'register',
     ]),
     onSubmit() {
-      const result = this.register(this.loginData);
-      if (result === true) {
-        this.$router.push('login');
-      }
+      this.register(this.loginData);
+      this.$router.push('login');
     },
   },
 };

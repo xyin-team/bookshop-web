@@ -19,7 +19,7 @@ export default {
   },
   register({ commit }, payload) { // eslint-disable-line no-unused-vars
     fetch('http://xyinproxy.free.idcfengye.com/register', {
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ username: payload.name, password: payload.password }),
       headers: {
         'content-type': 'application/json',
       },
