@@ -85,4 +85,8 @@ export default {
     });
     state.booklist.splice(index, 1);
   },
+  ADDBOOK(state, payload) {
+    console.log(payload);
+    state.booklist.push(payload);
+  },
 };

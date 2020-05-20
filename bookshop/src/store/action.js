@@ -110,7 +110,7 @@ export default {
     });
   },
   addBook({ commit }, payload) { // eslint-disable-line no-unused-vars
-    fetch('http://xyinproxy.free.idcfengye.com/book/add', {
+    return fetch('http://xyinproxy.free.idcfengye.com/book/add', {
       headers: {
         'content-type': 'application/json',
         'token': payload.token, // eslint-disable-line quote-props
@@ -118,8 +118,9 @@ export default {
       method: 'POST',
       body: JSON.stringify(payload.form),
     }).then((res) => res.json()).then((json) => {
-      console.log(json);
-      commit('GETORDER', json);
+      console.log(json.data);
+      commit('ADDBOOK', json.data);
+      return true;
     }).catch((err) => {
       console.log('请求错误', err);
     });

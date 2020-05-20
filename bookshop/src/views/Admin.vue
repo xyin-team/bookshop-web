@@ -105,11 +105,14 @@ export default {
         form: this.form,
         token: this.user.token,
       };
-      this.addBook(payload);
+      this.addBook(payload).then((res) => {
+        if (res) {
+          this.dialogFormVisible = false;
+        }
+      });
     },
     uploadCover(response) {
       this.form.cover = response.data.url;
-      this.dialogFormVisible = false;
     },
     dialogSure() {
       const payload = {
