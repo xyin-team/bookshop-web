@@ -10,11 +10,11 @@ export default {
     }).then((res) => res.json()).then((json) => {
       console.log(json);
       commit('USER_DATA', {
-        isAdmin: json.isAdmin,
+        isAdmin: json.data.isAdmin,
         name: payload.name,
         token: json.data.token,
       });
-      return true;
+      return json.data.isAdmin;
     }).catch((err) => {
       console.log('请求错误', err);
     });
