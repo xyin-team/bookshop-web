@@ -34,12 +34,14 @@ export default {
       'login',
     ]),
     onSubmit() {
-      this.login(this.loginData);
-      if (this.user.isAdmin === false) {
-        this.$router.push('/');
-      } else {
-        this.$router.push('/admin');
-      }
+      this.login(this.loginData).then((res) => {
+        console.log(res);
+        if (res === false) {
+          this.$router.push('/');
+        } else {
+          this.$router.push('/admin');
+        }
+      });
     },
   },
 };

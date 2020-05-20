@@ -1,6 +1,6 @@
 export default {
   login({ commit }, payload) {
-    fetch('http://xyinproxy.free.idcfengye.com/login', {
+    return fetch('http://xyinproxy.free.idcfengye.com/login', {
       body: JSON.stringify({ username: payload.name, password: payload.password }),
       headers: {
         'content-type': 'application/json',
